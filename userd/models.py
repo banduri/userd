@@ -8,7 +8,8 @@ class User(sqa.Base):
     id = sqa.Column(sqa.Integer, primary_key = True,  nullable = False)
     uid = sqa.Column(sqa.Integer, nullable = False)
     uname = sqa.Column(sqa.String(30), nullable = False)
-    main_group = sqa.Column(sqa.Integer, nullable = False)
+    main_group = sqa.Column(sqa.Integer, sqa.ForeignKey('ugroup.id'), nullable = False)
+    group = sqa.orm.relationship("Group", backref=sqa.orm.backref('ugroup', order_by=id))
     #flags set('lock','perm','hidden','group_leader','male','adm','multiLogin'
     password = sqa.Column(sqa.String(16), nullable = False)
     pw_md5 = sqa.Column(sqa.String(36), nullable = True)
@@ -48,7 +49,8 @@ class Group(sqa.Base):
 class Addr(sqa.Base):
     __tablename__ = 'addr'
     id = sqa.Column(sqa.Integer, primary_key = True, nullable = False)
-    id_user = sqa.Column(sqa.Integer, nullable = False)
+    id_user = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
+    user = sqa.orm.relationship("User", backref=sqa.orm.backref('addr', order_by=id))
     name = sqa.Column(sqa.String(30), nullable = True)
     country = sqa.Column(sqa.String(30), nullable = True)
     city = sqa.Column(sqa.String(30), nullable = True)
@@ -60,6 +62,7 @@ class Addr(sqa.Base):
 class Phone(sqa.Base):
     __tablename__ = 'phone'
     id = sqa.Column(sqa.Integer, primary_key = True, nullable = False)
-    id_user = sqa.Column(sqa.Integer, nullable = False)
+    id_user = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
+    user = sqa.orm.relationship("User", backref=sqa.orm.backref('phone', order_by=id))
     name = sqa.Column(sqa.String(30), nullable = False)
     phone = sqa.Column(sqa.String(30), nullable = False)
