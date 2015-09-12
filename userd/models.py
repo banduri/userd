@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class User(sqa.Base):
+class User(Base):
     __tablename__ = 'user'
     id = sqa.Column(sqa.Integer, primary_key = True,  nullable = False)
     uid = sqa.Column(sqa.Integer, nullable = False)
@@ -21,35 +21,35 @@ class User(sqa.Base):
     name1 = sqa.Column(sqa.String(50), nullable = False)
     name2 = sqa.Column(sqa.String(50), nullable = False)
     department = sqa.Column(sqa.String(30), nullable = False)
-    expires = sqa.Column(sqa.Integer, nullable = False)
-    last_login = sqa.Column(sqa.Integer, nullable = False)
+    expires = sqa.Column(sqa.BigInteger, nullable = False)
+    last_login = sqa.Column(sqa.BigInteger, nullable = False)
     creator = sqa.Column(sqa.Integer, nullable = False)
     cuser = sqa.orm.relationship("User", backref=sqa.orm.backref('user', order_by=id))
-    creation_time = sqa.Column(sqa.Integer, nullable = False)
+    creation_time = sqa.Column(sqa.BigInteger, nullable = False)
     updater = sqa.Column(sqa.Integer, nullable = False)
     uuser = sqa.orm.relationship("User", backref=sqa.orm.backref('user', order_by=id))
-    update_time = sqa.Column(sqa.Integer, nullable = False)
+    update_time = sqa.Column(sqa.BigInteger, nullable = False)
     lck_user = sqa.Column(sqa.Integer, nullable = False)
     luser = sqa.orm.relationship("User", backref=sqa.orm.backref('user', order_by=id))
-    lck_time = sqa.Column(sqa.Integer, nullable = False)
+    lck_time = sqa.Column(sqa.BigInteger, nullable = False)
     lck_ip = sqa.Column(sqa.String(15), nullable = True)
-    note = sqa.Column(sqa.String, nullable = True)
+    note = sqa.Column(sqa.Text, nullable = True)
 
     def __repr__(self):
         return "<User(name='%s', fullname='%s', password='%s')>" % (
                              self.name, self.fullname, self.password)
 
-class Group(sqa.Base):
+class Group(Base):
     __tablename__ = 'ugroup'
     id = sqa.Column(sqa.Integer,  primary_key = True, nullable = False)
     gid = sqa.Column(sqa.Integer, nullable = False)
     gname = sqa.Column(sqa.String(30), nullable = False)
     #flags enum('normal','pseudo')
     creator = sqa.Column(sqa.Integer, nullable = False)
-    creation_time = sqa.Column(sqa.Integer, nullable = False)
-    note = sqa.Column(sqa.String, nullable = True)
+    creation_time = sqa.Column(sqa.BigInteger, nullable = False)
+    note = sqa.Column(sqa.Text, nullable = True)
 
-class Addr(sqa.Base):
+class Addr(Base):
     __tablename__ = 'addr'
     id = sqa.Column(sqa.Integer, primary_key = True, nullable = False)
     id_user = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
@@ -62,7 +62,7 @@ class Addr(sqa.Base):
     zip_pobox = sqa.Column(sqa.String(6), nullable = True)
     pobox = sqa.Column(sqa.String(6), nullable = True)
 
-class Phone(sqa.Base):
+class Phone(Base):
     __tablename__ = 'phone'
     id = sqa.Column(sqa.Integer, primary_key = True, nullable = False)
     id_user = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
