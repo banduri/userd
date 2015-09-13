@@ -1,9 +1,8 @@
 import sqlalchemy as sqa
-from sqlalchemy.dialects.mysql import SET, LONGTEXT
+import sqlalchemy.dialects.mysql as sdm
 from sqlalchemy.ext.declarative import declarative_base
-
-
-
+import sqlalchemy.types as types
+import datetime as dt
 
 Base = declarative_base()
 
@@ -11,6 +10,15 @@ association_table = sqa.Table('rel_ugroup', Base.metadata,
     sqa.Column('id_ugroup', sqa.Integer, sqa.ForeignKey('ugroup.id')),
     sqa.Column('id_user', sqa.Integer, sqa.ForeignKey('user.id'))
 )
+
+class TimestampAsBigInt(types.TypeDecorator):
+    impl = types.BigInteger
+    #
+    def process_bind_param(self, value, dialect):
+        return int(value.timestamp())
+    #
+    def process_result_value(self, value, dialect):
+        return dt.datetime.fromtimestamp(value)
 
 
 class User(Base):
@@ -23,7 +31,7 @@ class User(Base):
     groups = sqa.orm.relationship("Group", secondary = association_table )
     #set('lock','perm','hidden','group_leader','male','adm','multiLogin'
     # how to use mysql sets in sqlalchemy? BigInt? String?
-    flags = sqa.Column(SET('lock','perm','hidden','group_leader','male','adm','multiLogin'), nullable = True)
+    flags = sqa.Column(sdm.SET('lock','perm','hidden','group_leader','male','adm','multiLogin'), nullable = True)
     password = sqa.Column(sqa.String(16), nullable = False)
     pw_md5 = sqa.Column(sqa.String(36), nullable = True)
     pw_lan = sqa.Column(sqa.String(34), nullable = True)
@@ -34,22 +42,22 @@ class User(Base):
     name1 = sqa.Column(sqa.String(50), nullable = False)
     name2 = sqa.Column(sqa.String(50), nullable = False)
     department = sqa.Column(sqa.String(30), nullable = False)
-    expires = sqa.Column(sqa.BigInteger, nullable = False)
-    last_login = sqa.Column(sqa.BigInteger, nullable = False)
+    expires = sqa.Column(TimestampAsBigInt, nullable = False)
+    last_login = sqa.Column(TimestampAsBigInt, nullable = False)
     creator = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
     cuser = sqa.orm.relationship("User", remote_side=[id], foreign_keys = 'User.creator', uselist=False)
     created = sqa.orm.relationship("User", foreign_keys = 'User.creator')
-    creation_time = sqa.Column(sqa.BigInteger, nullable = False)
+    creation_time = sqa.Column(TimestampAsBigInt, nullable = False)
     updater = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
     uuser = sqa.orm.relationship("User", remote_side=[id], foreign_keys = 'User.updater', uselist=False)
     updated = sqa.orm.relationship("User", foreign_keys = 'User.updater')
-    update_time = sqa.Column(sqa.BigInteger, nullable = False)
+    update_time = sqa.Column(TimestampAsBigInt, nullable = False)
     lck_user = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
     luser = sqa.orm.relationship("User", remote_side=[id], foreign_keys = 'User.lck_user', uselist=False)
     locked = sqa.orm.relationship("User", foreign_keys = 'User.lck_user')
-    lck_time = sqa.Column(sqa.BigInteger, nullable = False)
+    lck_time = sqa.Column(TimestampAsBigInt, nullable = False)
     lck_ip = sqa.Column(sqa.String(15), nullable = True)
-    note = sqa.Column(LONGTEXT, nullable = True)
+    note = sqa.Column(sdm.LONGTEXT, nullable = True)
     #
     def __repr__(self):
         return "<User(name='%s', fullname='%s')>" % (self.uname, self.name1+" "+self.name2)
@@ -62,8 +70,8 @@ class Group(Base):
     userss = sqa.orm.relationship("User", secondary = association_table )
     flags = sqa.Enum('normal','pseudo')
     creator = sqa.Column(sqa.Integer, nullable = False)
-    creation_time = sqa.Column(sqa.BigInteger, nullable = False)
-    note = sqa.Column(LONGTEXT, nullable = True)
+    creation_time = sqa.Column(TimestampAsBigInt, nullable = False)
+    note = sqa.Column(sdm.LONGTEXT, nullable = True)
 
 class Addr(Base):
     __tablename__ = 'addr'
