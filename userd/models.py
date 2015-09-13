@@ -98,13 +98,3 @@ class Phone(Base):
     phone = sqa.Column(sqa.String(30), nullable = False)
 
 
-engine = sqa.create_engine('mysql+mysqlconnector://root@localhost/user?charset=utf8', echo=True)
-connection = engine.connect()
-
-from sqlalchemy.orm import sessionmaker
-
-Session = sessionmaker(bind=engine)
-session = Session()
-
-our_user = session.query(User).filter_by(uname='ak').first()
-our_user.cuser
