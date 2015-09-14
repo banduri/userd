@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+    <head>
+        <title>tazuser</title>
+
+        <link rel="stylesheet" href="/static/css/bootstrap.css" />
+        <link rel="stylesheet" href="/static/css/jquery-ui-1.8.6.custom.css" />
+        <link rel="stylesheet" href="/static/css/pwdmeter.css" />
+
+        <link rel="shortcut icon" href="/static/favicon.ico" />
+
+
+        <script type="text/javascript" src="/static/js/jquery.js"></script>
+        <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/static/js/pwdmeter.js"></script>
+
+        <meta charset="ISO-8859-1" />
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>taz Nutzerverwaltung</h1>
+            </div>
+
+<!-- CONTENT -->
+
+            <form action="" method="post">
+                <div class="row">
+                    <div class="span4 columns">
+                        <fieldset id="private_data">
+                            <legend>Pers&ouml;nliche Daten</legend>
+                            <div class="clearfix">
+                                <label for="name1" >Vorname*</label>
+                                <div class="input">
+                                    <input type="text" name="name1" value="Alexander" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="name2" >Nachname*</label>
+                                <div class="input">
+                                    <input type="text" name="name2" value="Kasper" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="office_phone" >Telefon B&uuml;ro</label>
+                                <div class="input">
+                                    <input type="text" name="office_phone" value="167" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="note" >Bemerkung</label>
+                                <div class="input">
+                                    <textarea name="note" cols="5" rows="1">unixadmin</textarea>
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="expires" >Laufzeit</label>
+                                <div class="input">
+                                    <input id="expires" type="text" name="expires" value="28.07.16">
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="department" >Abteilung</label>
+                                <div class="input">
+                                    <input type="text" name="department" value="EDV" >
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
