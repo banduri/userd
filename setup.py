@@ -10,7 +10,8 @@ setup(name='userd',
       packages=['userd'],
       install_requires=[
           'sqlalchemy',
-          'jinja2'
+          'jinja2',
+          'cherrypy'
       ],
       zip_safe=False)
 
