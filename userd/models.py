@@ -67,7 +67,7 @@ class Group(Base):
     id = sqa.Column(sqa.Integer,  primary_key = True, nullable = False)
     gid = sqa.Column(sqa.Integer, nullable = False)
     gname = sqa.Column(sqa.String(30), nullable = False)
-    userss = sqa.orm.relationship("User", secondary = association_table )
+    users = sqa.orm.relationship("User", secondary = association_table )
     flags = sqa.Enum('normal','pseudo')
     creator = sqa.Column(sqa.Integer, nullable = False)
     creation_time = sqa.Column(TimestampAsBigInt, nullable = False)
