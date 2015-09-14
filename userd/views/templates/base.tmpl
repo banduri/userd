@@ -13,6 +13,10 @@
         <script type="text/javascript" src="/static/js/jquery.js"></script>
         <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
         <script type="text/javascript" src="/static/js/pwdmeter.js"></script>
+        <script type="text/javascript" src="/static/js/tazMultiselect.js"></script>
+        <script type="text/javascript">
+            $(function(){ $('.multiselect').tazMultiselect(); });
+        </script>
 
         <meta charset="ISO-8859-1" />
 
@@ -70,6 +74,27 @@
                                 <div class="input">
                                     <input type="text" name="department" value="{{ user.department }}" >
                                 </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="multiselect" id="groups">
+                            <legend>Gruppen</legend>
+                            <div class="clearfix hidable multiselect-group">
+                                {% for groupsetname, groupsset in groups %}
+                                <label for="groups"><strong>{{ groupsetname }}</strong></label>
+                                <div class="input">
+                                    <ul class="inputs-list groups">
+                                        {% for group in groupsset%}
+                                        <li class="multiselect-field">
+                                            <label>
+                                                <input class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.id }}" >
+                                                    <b>{{ group.gname }}</b> <div><small>{{ group.note }} ( {{ group.users|length }} )</small></div>
+                                            </label>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endfor %}
                             </div>
                         </fieldset>
                     </div>
