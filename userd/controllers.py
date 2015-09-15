@@ -18,7 +18,7 @@ from models import User, Group
 env = Environment(loader=PackageLoader('views', 'templates'))
 
 
-engine = sqa.create_engine('mysql+mysqlconnector://root@localhost/user?charset=utf8', echo=True)
+engine = sqa.create_engine('mysql+mysqlconnector://root@localhost/user?charset=utf8')
 connection = engine.connect()
 
 Session = sessionmaker(bind=engine)
@@ -29,13 +29,14 @@ class Root(object):
     @cherrypy.expose
     def index(self):
         our_user = session.query(User).filter_by(uname='ak').first()
-        ingroups = session.query(Group).filter(Group.gname.like("in%")).order_by(Group.gname)
+        # special case informix: it's not a locationgroup
+        ingroups = session.query(Group).filter(Group.gname.like("in%"), ~(Group.gname=='informix')).order_by(Group.gname)
         abtgroups = session.query(Group).filter(Group.gname.like("abt_%")).order_by(Group.gname)
         gremgroups = session.query(Group).filter(Group.gname.like("grem_%")).order_by(Group.gname)
         resgroups = session.query(Group).filter(Group.gname.like("res_%")).order_by(Group.gname)
         irgroups = session.query(Group).filter(Group.gname.like("ir_%")).order_by(Group.gname)
         amqpgroups = session.query(Group).filter(Group.gname.like("amqp_%")).order_by(Group.gname)
-        other = session.query(Group).filter(~Group.gname.like("in%"),
+        other = session.query(Group).filter((~Group.gname.like("in%")) | (Group.gname=='informix'),
                                             ~Group.gname.like("abt_%"),
                                             ~Group.gname.like("grem_%"),
                                             ~Group.gname.like("res_%"),
@@ -48,6 +49,8 @@ class Root(object):
                 ('Interred', irgroups),
                 ('AMQP-Notifier', amqpgroups),
                 ('Andere', other)]
+
+
 
         template_index=env.get_template('base.tmpl')
         return template_index.render(user=our_user, groups=groups)
