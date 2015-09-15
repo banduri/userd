@@ -23,6 +23,13 @@ class TimestampAsBigInt(types.TypeDecorator):
 
 class User(Base):
     __tablename__ = 'user'
+    flags_values = {'lock' : 'Sperre',
+                    'perm' : 'Sonderrechte',
+                    'hidden' : 'Versteckt',
+                    'group_leader' : 'Gruppenleiter',
+                    'male' : 'männlich',
+                    'adm' : 'Admin',
+                    'multiLogin' : ' Passwortsperre'}
     id = sqa.Column(sqa.Integer, primary_key = True,  nullable = False)
     uid = sqa.Column(sqa.Integer, nullable = False)
     uname = sqa.Column(sqa.String(30), nullable = False)
@@ -31,7 +38,7 @@ class User(Base):
     groups = sqa.orm.relationship("Group", secondary = association_table )
     #set('lock','perm','hidden','group_leader','male','adm','multiLogin'
     # how to use mysql sets in sqlalchemy? BigInt? String?
-    flags = sqa.Column(sdm.SET('lock','perm','hidden','group_leader','male','adm','multiLogin'), nullable = True)
+    flags = sqa.Column(sdm.SET(list(flags_values.keys())), nullable = True)
     password = sqa.Column(sqa.String(16), nullable = False)
     pw_md5 = sqa.Column(sqa.String(36), nullable = True)
     pw_lan = sqa.Column(sqa.String(34), nullable = True)
