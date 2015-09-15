@@ -18,6 +18,39 @@
             $(function(){ $('.multiselect').tazMultiselect(); });
         </script>
 
+        <script type="text/javascript">
+            $(function(){
+                $('#main_group').change( function () {
+                    var group = $(this).find('option:selected').val();
+                    var preset_groups = null;
+
+                    switch (group) {
+                        case 'redakt':
+                            preset_groups = new Array("red", "redakt");
+                            break;
+                        case 'berlin':
+                            preset_groups = new Array("berlin", "red", "redakt");
+                            break;
+                        case 'devel':
+                            preset_groups = new Array("devel", "redakt", "red", "foto", "adm", "mailbox");
+                            break;
+                    };
+                    if ( preset_groups != null ) {
+                        $('#groups input:checkbox').attr('checked',false);
+                        $.each( preset_groups, function (index) {
+                            $('#groups input[value="' + preset_groups[index]  + '"]').each( function () {
+                                $(this).attr('checked',true);
+                                $(this).change();
+                            });
+                        })
+                    }
+
+                    $('#groups input').removeAttr('disabled');
+                    $('#groups input[value="' + group + '"]').attr('disabled','disabled').attr('checked','checked');
+                });
+            });
+        </script>
+
         <meta charset="ISO-8859-1" />
 
     </head>
@@ -87,7 +120,12 @@
                                         {% for group in groupsset%}
                                         <li class="multiselect-field">
                                             <label>
-                                                <input class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.id }}" >
+
+                                                {% if group.id in user.groups|map(attribute='id') %}
+                                                    <input checked class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.gname }}" >
+                                                {% else %}
+                                                    <input class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.gname }}" >
+                                                {% endif %}
                                                     <b>{{ group.gname }}</b> <div><small>{{ group.note }} ( {{ group.users|length }} )</small></div>
                                             </label>
                                         </li>
@@ -95,6 +133,96 @@
                                     </ul>
                                 </div>
                                 {% endfor %}
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="span6 columns offset3">
+                        <fieldset id="account_data">
+                            <legend>Account Daten</legend>
+                            <div class="clearfix">
+                                <label for="name" >Username</label>
+                                <div class="input">
+                                    <input disabled type="text" name="name" value="{{ user.uname }}">
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="shell" >Shell</label>
+                                <div class="input">
+                                    <input type="text" name="shell" value="{{ user.shell }}" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="home" >Home</label>
+                                <div class="input">
+                                    <input id="home" type="text" name="home" value="{{ user.home }}" >
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                                <label for="group" >Hauptgruppe</label>
+                                <div class="input">
+                                    <select id="main_group" name="group" size="1">
+                                        {% for groupsetname, groupsset in groups %}
+                                            {% for group in groupsset %}
+                                                {% if group.id == user.main_group %}
+                                                    <option selected value="{{ group.id }}">{{ group.gname }}</options>
+                                                {% else %}
+                                                    <option value="{{ group.id }}">{{ group.gname }}</options>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="passwd" >Passwort: </label>
+                                <div class="input">
+                                    <input onkeyup="chkPass(this.value);" type="password" name="passwd" value="" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="passwd_check" >Passwort</label>
+                                <div class="input">
+                                    <input type="password" name="passwd_check" value="" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="pwqual" >Passwort Qualit&auml;t:<br><p style="font-size: 85%;">(ca 50% ist ok <a target="_blank" href="/public/pwdmeter/">Info</a> )</p></label>
+                                <div class="input">
+                                    <div id="score">0%</div>
+                                    <div id="scorebar">&nbsp;</div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset id="flags">
+                            <legend>Flags</legend>
+                            <div class="clearfix">
+                                <label for="flags" >Flags</label>
+
+                                <div class="input">
+                                    <ul name="flags" class="inputs-list">
+                                        {% for flag,flagdisplay in user.flags_values.items() %}
+                                        <li>
+                                            <label for="{{ flag }}" >
+                                                {% if flag in user.flags %}
+                                                    <input type="checkbox" name="flags[]" value="{{ flag }}" checked>
+                                                {% else %}
+                                                    <input type="checkbox" name="flags[]" value="{{ flag }}" >
+                                                {% endif %}
+                                                {{ flagdisplay }}
+                                            </label>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
