@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project userd -->
-<!-- Saved: 2015-09-12, 18:56:42 -->
+<!-- Saved: 2015-09-16, 00:41:15 -->
 <!-- Copyright (C) 2015 ,  -->
 <Project version="5.1">
   <Language></Language>
@@ -20,13 +20,16 @@
     <Source>userd/__init__.py</Source>
     <Source>userd/server.py</Source>
     <Source>userd/controllers.py</Source>
+    <Source>userd/views/__init__.py</Source>
   </Sources>
   <Forms/>
   <Translations/>
   <Resources/>
   <Interfaces/>
   <Others>
-    <Other>userd/views/base.tmpl</Other>
+    <Other>userd/static</Other>
+    <Other>notes.tmpl</Other>
+    <Other>userd/views/templates</Other>
   </Others>
   <Vcs>
     <VcsType>Git</VcsType>
