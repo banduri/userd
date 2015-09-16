@@ -27,7 +27,7 @@ session = Session()
 class Root(object):
 
     @cherrypy.expose
-    def index(self):
+    def adminuser(self):
         our_user = session.query(User).filter_by(uname='ak').first()
         # special case informix: it's not a locationgroup
         ingroups = session.query(Group).filter(Group.gname.like("in%"), ~(Group.gname=='informix')).order_by(Group.gname)
@@ -52,8 +52,14 @@ class Root(object):
 
 
 
-        template_index=env.get_template('base.tmpl')
+        template_index=env.get_template('adminuser.tmpl')
         return template_index.render(user=our_user, groups=groups)
+
+    @cherrypy.expose
+    def user(self):
+        our_user = session.query(User).filter_by(uname='ak').first()
+        template_index=env.get_template('user.tmpl')
+        return template_index.render(user=our_user)
 
 
 if __name__ == '__main__':
