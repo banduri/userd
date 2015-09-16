@@ -17,7 +17,7 @@
                             <div class="clearfix">
                                 <label for="office_phone" >Telefon B&uuml;ro</label>
                                 <div class="input">
-                                    <input type="text" name="office_phone" value="{{ user.phone.phone|d("") }}" >
+                                    <input type="text" name="office_phone" value="{{ user.phone.phone|d("") if user.phone is defined }}" >
                                 </div>
                             </div>
 
