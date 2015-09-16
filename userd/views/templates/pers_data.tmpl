@@ -3,42 +3,42 @@
                             <div class="clearfix">
                                 <label for="name1" >Vorname*</label>
                                 <div class="input">
-                                    <input type="text" name="name1" value="{{ user.name1 }}" >
+                                    <input type="text" name="name1" value="{{ user.name1|d("") }}" >
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="name2" >Nachname*</label>
                                 <div class="input">
-                                    <input type="text" name="name2" value="{{ user.name2 }}" >
+                                    <input type="text" name="name2" value="{{ user.name2|d("") }}" >
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="office_phone" >Telefon B&uuml;ro</label>
                                 <div class="input">
-                                    <input type="text" name="office_phone" value="{{ user.phone.phone }}" >
+                                    <input type="text" name="office_phone" value="{{ user.phone.phone|d("") }}" >
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="note" >Bemerkung</label>
                                 <div class="input">
-                                    <textarea name="note" cols="5" rows="1">{{ user.note }}</textarea>
+                                    <textarea name="note" cols="5" rows="1">{{ user.note|d("") }}</textarea>
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="expires" >Laufzeit</label>
                                 <div class="input">
-                                    <input id="expires" type="text" name="expires" value="{{ user.expires }}">
+                                    <input id="expires" type="text" name="expires" value="{{ user.expires|d("") }}">
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="department" >Abteilung</label>
                                 <div class="input">
-                                    <input type="text" name="department" value="{{ user.department }}" >
+                                    <input type="text" name="department" value="{{ user.department|d("") }}" >
                                 </div>
                             </div>
                         </fieldset>

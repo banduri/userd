@@ -70,7 +70,7 @@
                             <legend>Gruppen</legend>
                             <div class="clearfix hidable multiselect-group">
                                 {% for groupsetname, groupsset in groups %}
-                                <label for="groups"><strong>{{ groupsetname }}</strong></label>
+                                <label for="groups"><strong>{{ groupsetname|d("") }}</strong></label>
                                 <div class="input">
                                     <ul class="inputs-list groups">
                                         {% for group in groupsset%}
@@ -78,11 +78,11 @@
                                             <label>
 
                                                 {% if group.id in user.groups|map(attribute='id') %}
-                                                    <input checked class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.gname }}" >
+                                                    <input checked class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.gname|d("") }}" >
                                                 {% else %}
-                                                    <input class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.gname }}" >
+                                                    <input class="multiselect-input" type="checkbox" name="groups[]" value="{{ group.gname|d("") }}" >
                                                 {% endif %}
-                                                    <b>{{ group.gname }}</b> <div><small>{{ group.note }} ( {{ group.users|length }} )</small></div>
+                                                    <b>{{ group.gname|d("") }}</b> <div><small>{{ group.note|d("") }} ( {{ group.users|length }} )</small></div>
                                             </label>
                                         </li>
                                         {% endfor %}
@@ -100,21 +100,21 @@
                             <div class="clearfix">
                                 <label for="name" >Username</label>
                                 <div class="input">
-                                    <input disabled type="text" name="name" value="{{ user.uname }}">
+                                    <input disabled type="text" name="name" value="{{ user.uname|d("") }}">
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="shell" >Shell</label>
                                 <div class="input">
-                                    <input type="text" name="shell" value="{{ user.shell }}" >
+                                    <input type="text" name="shell" value="{{ user.shell|d("") }}" >
                                 </div>
                             </div>
 
                             <div class="clearfix">
                                 <label for="home" >Home</label>
                                 <div class="input">
-                                    <input id="home" type="text" name="home" value="{{ user.home }}" >
+                                    <input id="home" type="text" name="home" value="{{ user.home|d("") }}" >
                                 </div>
                             </div>
                             <div class="clearfix">
@@ -124,9 +124,9 @@
                                         {% for groupsetname, groupsset in groups %}
                                             {% for group in groupsset %}
                                                 {% if group.id == user.main_group %}
-                                                    <option selected value="{{ group.id }}">{{ group.gname }}</options>
+                                                    <option selected value="{{ group.id }}">{{ group.gname|d("") }}</options>
                                                 {% else %}
-                                                    <option value="{{ group.id }}">{{ group.gname }}</options>
+                                                    <option value="{{ group.id }}">{{ group.gname|d("") }}</options>
                                                 {% endif %}
                                             {% endfor %}
                                         {% endfor %}
@@ -173,7 +173,7 @@
                                                 {% else %}
                                                     <input type="checkbox" name="flags[]" value="{{ flag }}" >
                                                 {% endif %}
-                                                {{ flagdisplay }}
+                                                {{ flagdisplay|d("unnamed") }}
                                             </label>
                                         </li>
                                         {% endfor %}

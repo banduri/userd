@@ -32,21 +32,21 @@
                     <div class="clearfix">
                         <label for="name" >Name:</label>
                         <div class="input">
-                            <input disabled type="text" name="name" value="{{ group.gname }}" >
+                            <input disabled type="text" name="name" value="{{ group.gname|d("") }}" >
                         </div>
                     </div>
 
                     <div class="clearfix">
                         <label for="gid" >Nummer:</label>
                         <div class="input">
-                            <input disabled type="text" name="gid" value="{{ group.gid }}">
+                            <input disabled type="text" name="gid" value="{{ group.gid|d("0") }}">
                         </div>
                     </div>
 
                     <div class="clearfix">
                         <label for="note" >Beschreibung:</label>
                         <div class="input">
-                        <textarea name="note" cols="20" rows="5">{{ group.note }}</textarea>
+                        <textarea name="note" cols="20" rows="5">{{ group.note|d("") }}</textarea>
                     </div>
 
                 </fieldset>
@@ -54,16 +54,16 @@
                 <fieldset id="members"> <legend>Gruppenmitglieder</legend>
                     <div class="clearfix hidable multiselect-group">
                         {% for usersetname, userset in users %}
-                            <label>{{ usersetname}} Mitglieder</label>
+                            <label>{{ usersetname|d("unbenannte") }} Mitglieder</label>
                             <div class="input">
                                 <ul class="inputs-list">
                                     {% for user in userset %}
                                     <li>
                                         <label class="multiselect-field">
                                             {% if user.id in group.users|map(attribute='id') %}
-                                                <input checked type="checkbox" name="member[]" value="{{ user.uname }}"><b>{{ user.uname }}</b> <small>({{ user.name1 }} {{ user.name2 }})</small>
+                                                <input checked type="checkbox" name="member[]" value="{{ user.uname|d("") }}"><b>{{ user.uname|d("") }}</b> <small>({{ user.name1|d("") }} {{ user.name2|d("") }})</small>
                                             {% else %}
-                                                <input type="checkbox" name="member[]" value="{{ user.uname }}"><b>{{ user.uname }}</b> <small>({{ user.name1 }} {{ user.name2 }})</small>
+                                                <input type="checkbox" name="member[]" value="{{ user.uname|d("") }}"><b>{{ user.uname|d("") }}</b> <small>({{ user.name1|d("") }} {{ user.name2|d("") }})</small>
                                             {% endif %}
                                         </label>
                                     </li>
