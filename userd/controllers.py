@@ -28,6 +28,8 @@ class Root(object):
         Session = sessionmaker(bind=engine)
         session = Session()
         our_user = session.query(User).filter_by(uname=username).first()
+        if not our_user:
+            our_user = User(uname=username, flags=set())
         # special case informix: it's not a locationgroup
         ingroups = session.query(Group).filter(Group.gname.like("in%"), ~(Group.gname=='informix')).order_by(Group.gname)
         abtgroups = session.query(Group).filter(Group.gname.like("abt_%")).order_by(Group.gname)
@@ -60,6 +62,8 @@ class Root(object):
         session = Session()
 
         our_group = session.query(Group).filter_by(gname=groupname).first()
+        if not our_group:
+            our_group = Group(gname=groupname)
         allusers = session.query(User).order_by(User.uname)
         # filter by flag this is ugly - but there is no support for "FIND_IN_SET('value',set_col)" in sqlalchemy
         # selecting all 'lock'ed users
@@ -92,7 +96,7 @@ class Root(object):
     def user(self):
         Session = sessionmaker(bind=engine)
         session = Session()
-        our_user = session.query(User).filter_by(uname='ak').first()
+        our_user = session.query(User).filter_by(uname='testtest').first()
         template_index=env.get_template('user.tmpl')
         return template_index.render(user=our_user)
 
