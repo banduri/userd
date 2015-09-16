@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+    <head>
+        <title>tazuser</title>
+
+        <link rel="stylesheet" href="/static/css/bootstrap.css" />
+        <link rel="stylesheet" href="/static/css/jquery-ui-1.8.6.custom.css" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+
+        <script type="text/javascript" src="/static/js/jquery.js"></script>
+        <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/static/js/tazMultiselect.js"></script>
+        <script type="text/javascript">
+            $( function () { $('#members').tazMultiselect() });
+        </script>
+
+        <meta charset="ISO-8859-1" />
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>taz Nutzerverwaltung</h1>
+            </div>
+
+
+<!-- CONTENT -->
+
+            <form class="form" action="devel" method="post">
+
+                <fieldset> <legend>Gruppeninformationen</legend>
+                    <div class="clearfix">
+                        <label for="name" >Name:</label>
+                        <div class="input">
+                            <input disabled type="text" name="name" value="{{ group.gname }}" >
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <label for="gid" >Nummer:</label>
+                        <div class="input">
+                            <input disabled type="text" name="gid" value="{{ group.gid }}">
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <label for="note" >Beschreibung:</label>
+                        <div class="input">
+                        <textarea name="note" cols="20" rows="5">{{ group.note }}</textarea>
+                    </div>
+
+                </fieldset>
+
+                <fieldset id="members"> <legend>Gruppenmitglieder</legend>
+                    <div class="clearfix hidable multiselect-group">
+                        {% for usersetname, userset in users %}
+                            <label>{{ usersetname}} Mitglieder</label>
+                            <div class="input">
+                                <ul class="inputs-list">
+                                    {% for user in userset %}
+                                    <li>
+                                        <label class="multiselect-field">
+                                            {% if user.id in group.users|map(attribute='id') %}
+                                                <input checked type="checkbox" name="member[]" value="{{ user.uname }}"><b>{{ user.uname }}</b> <small>({{ user.name1 }} {{ user.name2 }})</small>
+                                            {% else %}
+                                                <input type="checkbox" name="member[]" value="{{ user.uname }}"><b>{{ user.uname }}</b> <small>({{ user.name1 }} {{ user.name2 }})</small>
+                                            {% endif %}
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </fieldset>
+            </form>
+<!-- END CONTENT -->
+
+        </div>
+    </body>
+</html>
