@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+    <head>
+        <title>tazuser</title>
+
+        <link rel="stylesheet" href="/static/css/bootstrap.css" />
+        <link rel="stylesheet" href="/static/css/jquery-ui-1.8.6.custom.css" />
+        <link rel="stylesheet" href="/static/css/pwdmeter.css" />
+
+        <link rel="shortcut icon" href="/static/favicon.ico" />
+
+
+        <script type="text/javascript" src="/static/js/jquery.js"></script>
+        <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/static/js/pwdmeter.js"></script>
+        <script type="text/javascript" src="/static/js/tazMultiselect.js"></script>
+        <script type="text/javascript">
+            $(function(){ $('.multiselect').tazMultiselect(); });
+        </script>
+
+        <script type="text/javascript">
+            $(function(){
+                $('#main_group').change( function () {
+                    var group = $(this).find('option:selected').val();
+                    var preset_groups = null;
+
+                    switch (group) {
+                        case 'redakt':
+                            preset_groups = new Array("red", "redakt");
+                            break;
+                        case 'berlin':
+                            preset_groups = new Array("berlin", "red", "redakt");
+                            break;
+                        case 'devel':
+                            preset_groups = new Array("devel", "redakt", "red", "foto", "adm", "mailbox");
+                            break;
+                    };
+                    if ( preset_groups != null ) {
+                        $('#groups input:checkbox').attr('checked',false);
+                        $.each( preset_groups, function (index) {
+                            $('#groups input[value="' + preset_groups[index]  + '"]').each( function () {
+                                $(this).attr('checked',true);
+                                $(this).change();
+                            });
+                        })
+                    }
+
+                    $('#groups input').removeAttr('disabled');
+                    $('#groups input[value="' + group + '"]').attr('disabled','disabled').attr('checked','checked');
+                });
+            });
+        </script>
+
+        <meta charset="ISO-8859-1" />
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>taz Nutzerverwaltung</h1>
+            </div>
+
+<!-- CONTENT -->
+
+            <form action="" method="post">
+                <div class="row">
+                    <div class="span4 columns">
+                        {% include 'pers_data.tmpl' %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
