@@ -1,0 +1,44 @@
+                        <fieldset id="private_data">
+                            <legend>Pers&ouml;nliche Daten</legend>
+                            <div class="clearfix">
+                                <label for="name1" >Vorname*</label>
+                                <div class="input">
+                                    <input type="text" name="name1" value="{{ user.name1 }}" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="name2" >Nachname*</label>
+                                <div class="input">
+                                    <input type="text" name="name2" value="{{ user.name2 }}" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="office_phone" >Telefon B&uuml;ro</label>
+                                <div class="input">
+                                    <input type="text" name="office_phone" value="{{ user.phone.phone }}" >
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="note" >Bemerkung</label>
+                                <div class="input">
+                                    <textarea name="note" cols="5" rows="1">{{ user.note }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="expires" >Laufzeit</label>
+                                <div class="input">
+                                    <input id="expires" type="text" name="expires" value="{{ user.expires }}">
+                                </div>
+                            </div>
+
+                            <div class="clearfix">
+                                <label for="department" >Abteilung</label>
+                                <div class="input">
+                                    <input type="text" name="department" value="{{ user.department }}" >
+                                </div>
+                            </div>
+                        </fieldset>
