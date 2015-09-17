@@ -68,14 +68,6 @@ class Root(object):
             our_group = Group(gname=groupname)
         allusers = session.query(User).order_by(User.uname)
         # filter by flag this is ugly - but there is no support for "FIND_IN_SET('value',set_col)" in sqlalchemy
-        # selecting all 'lock'ed users
-        lockedusers = []
-        for user in allusers :
-            if 'lock' in user.flags:
-                lockedusers.append(user)
-            elif user.expires < dt.datetime.now():
-                lockedusers.append(user)
-
         # selecting all 'hidden' users
         hiddenusers = []
         for user in allusers:
@@ -90,8 +82,7 @@ class Root(object):
                     activeusers.append(user)
 
         users = [   ("aktive", activeusers),
-                    ("versteckte", hiddenusers),
-                    ("gesperrte", lockedusers)]
+                    ("versteckte", hiddenusers)]
 
         template_index=env.get_template('group.tmpl')
         return template_index.render(group=our_group, users=users)
