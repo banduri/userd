@@ -100,6 +100,14 @@ class Root(object):
         template_index=env.get_template('user.tmpl')
         return template_index.render(user=our_user)
 
+    @cherrypy.expose
+    def index(self):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        users = session.query(User).order_by(User.uname)
+        groups = session.query(Group).order_by(Group.gname)
+        template_index = env.get_template('index.tmpl')
+        return template_index.render(users=users, groups=groups)
 
 if __name__ == '__main__':
     conf = {'/static': {
