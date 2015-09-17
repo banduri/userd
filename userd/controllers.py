@@ -79,14 +79,15 @@ class Root(object):
         # selecting all 'hidden' users
         hiddenusers = []
         for user in allusers:
-            if 'hidden' in user.flags:
+            if ('hidden' in user.flags) and (user.expires > dt.datetime.now()):
                 hiddenusers.append(user)
 
         # selecting all users not 'hidden' and not 'lock'ed
         activeusers = []
         for user in allusers :
             if not 'hidden' in user.flags and not 'lock' in user.flags:
-                activeusers.append(user)
+                if (user.expires > dt.datetime.now()):
+                    activeusers.append(user)
 
         users = [   ("aktive", activeusers),
                     ("versteckte", hiddenusers),
