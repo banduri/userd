@@ -61,7 +61,6 @@ class User(Base):
     update_time = sqa.Column(TimestampAsBigInt, nullable = False)
     lck_user = sqa.Column(sqa.Integer, sqa.ForeignKey('user.id'), nullable = False)
     luser = sqa.orm.relationship("User", remote_side=[id], foreign_keys = 'User.lck_user', uselist=False)
-    locked = sqa.orm.relationship("User", foreign_keys = 'User.lck_user')
     lck_time = sqa.Column(TimestampAsBigInt, nullable = False)
     lck_ip = sqa.Column(sqa.String(15), nullable = True)
     note = sqa.Column(sdm.LONGTEXT, nullable = True)
