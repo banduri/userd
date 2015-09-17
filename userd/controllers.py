@@ -15,6 +15,8 @@ import sqlalchemy as sqa
 from sqlalchemy.orm import sessionmaker
 from models import User, Group
 
+import datetime as dt
+
 env = Environment(loader=PackageLoader('views', 'templates'))
 
 
@@ -71,6 +73,8 @@ class Root(object):
         for user in allusers :
             if 'lock' in user.flags:
                 lockedusers.append(user)
+            elif user.expires < dt.datetime.now():
+                lockedusers.append(user)
 
         # selecting all 'hidden' users
         hiddenusers = []
@@ -104,10 +108,23 @@ class Root(object):
     def index(self):
         Session = sessionmaker(bind=engine)
         session = Session()
+        # all users
         users = session.query(User).order_by(User.uname)
+        # all groups
         groups = session.query(Group).order_by(Group.gname)
+        # find the users which will expire in 42 days
+        expusers = []
+        for user in users:
+            # first filter already locked users
+            # first check flags
+            if (not ('lock' in user.flags)) and (not ('hidden' in user.flags)):
+                # then check expires time in the past
+                if not user.expires < dt.datetime.now():
+                    if user.expires - dt.datetime.now() < dt.timedelta(days = 42):
+                        expusers.append(user)
+
         template_index = env.get_template('index.tmpl')
-        return template_index.render(users=users, groups=groups)
+        return template_index.render(users=users, groups=groups, expusers=expusers)
 
 if __name__ == '__main__':
     conf = {'/static': {
