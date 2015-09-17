@@ -76,7 +76,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for expuser in expusers %}
+                {% for user in expusers %}
                     <tr class="user">
                         <td class="username"><a href="/adminuser/?username={{ user.uname }}">{{ user.uname }}</a></td>
                         <td class="expires">{{ user.expires }}</td>
