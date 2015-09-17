@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+    <head>
+        <title>tazuser</title>
+
+        <link rel="stylesheet" href="/static/css/bootstrap.css" />
+        <link rel="stylesheet" href="/static/css/jquery-ui-1.8.6.custom.css" />
+        <link rel="stylesheet" href="/static/css/pwdmeter.css" />
+
+        <link rel="shortcut icon" href="/favicon.ico" />
+
+
+        <script type="text/javascript" src="/static/js/jquery.js"></script>
+        <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.tablesorter.min.js"></script>
+
+        <meta charset="ISO-8859-1" />
+
+    </head>
+    <body>
+    <div class="container">
+        <div class="page-header">
+            <h1>taz Nutzerverwaltung</h1>
+        </div>
+
+
+<!-- CONTENT -->
+
+        <div class="container">
+            <form class="form" action="" name="edit" method="post">
+
+                <fieldset class="existing_ressource">
+
+                    <legend>Nutzer anlegen/bearbeiten</legend>
+                    <div class="clearfix">
+                        <label for="user" >Nutzername</label>
+                        <div class="input">
+                            <select name="user" id="select_uid" size="1" width="100%" accesskey="1" autofocus>
+                                {% for user in users %}
+                                    <option value="{{ user.uname }}">{{ user.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <input class="btn" type="submit" value="Bearbeiten" />
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <form class="form" action="" method="post">
+                <fieldset class="new_ressource">
+                    <legend>Gruppe anlegen/bearbeiten</legend>
+                    <div class="clearfix">
+                        <label for="group" >Gruppenname</label>
+                        <div class="input">
+                            <select name="group" id="select_gid" size="1" width="100%" accesskey="2" autofocus>
+                                {% for group in groups %}
+                                    <option value="{{ group.gname }}">{{ group.gname }}</option>
+                                {% endfor %}
+                            </select>
+                            <input class="btn" type="submit" value="Neue Gruppe anlegen" />
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+
+
+        <h2>Accounts verl&auml;ngern</h2>
+        <table id="expiration-table" class="zebra-striped">
+            <thead>
+                <tr>
+                    <th>Nutzername</th>
+                    <th>Laufzeit</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expuser in expusers %}
+                    <tr class="user">
+                        <td class="username"><a href="/adminuser/?username={{ user.uname }}">{{ user.uname }}</a></td>
+                        <td class="expires">{{ user.expires }}</td>
+                        <td>
+                            <a href="/adminuser/?username={{ user.uname }}">+1 Monat</a>
+                            <a href="/adminuser/?username={{ user.uname }}">+1 Jahr</a>
+                            <a href="/adminuser/?username={{ user.uname }}">+3 Jahre</a>
+
+                            <a style="display:none" href="/adminuser/?username={{ user.uname }}">+1 Monat</a>
+                            <a style="display:none" href="/adminuser/?username={{ user.uname }}">+1 Jahr</a>
+                            <a style="display:none" href="/adminuser/?username={{ user.uname }}">+3 Jahre</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
+
+<!-- END CONTENT -->
